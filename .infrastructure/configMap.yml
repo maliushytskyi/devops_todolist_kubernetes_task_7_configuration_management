@@ -2,6 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
-  namespace: mateapp
+  namespace: todoapp
 data:
-  PYTHONBUFFERED: "1"
+  PYTHONUNBUFFERED: "1"

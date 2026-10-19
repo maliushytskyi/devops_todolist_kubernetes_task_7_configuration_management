@@ -33,8 +33,8 @@ kubectl rollout status deployment/todoapp -n todoapp
 ### 1. Resources exist and the pod is running
 
 ```bash
-kubectl get configmap todoapp-config -n todoapp
-kubectl get secret todoapp-secret -n todoapp
+kubectl get configmap app-config -n todoapp
+kubectl get secret app-secrets -n todoapp
 kubectl get deployment todoapp -n todoapp
 kubectl get pods -n todoapp
 ```
@@ -44,7 +44,7 @@ Expected: the ConfigMap and the Secret are listed, the Deployment is `READY 1/1`
 ### 2. ConfigMap contains `PYTHONUNBUFFERED`
 
 ```bash
-kubectl get configmap todoapp-config -n todoapp -o yaml
+kubectl get configmap app-config -n todoapp -o yaml
 ```
 
 Expected: `data` contains the `PYTHONUNBUFFERED` key.
@@ -52,7 +52,7 @@ Expected: `data` contains the `PYTHONUNBUFFERED` key.
 ### 3. Secret contains `SECRET_KEY`
 
 ```bash
-kubectl get secret todoapp-secret -n todoapp -o jsonpath='{.data.SECRET_KEY}' | base64 --decode
+kubectl get secret app-secrets -n todoapp -o jsonpath='{.data.SECRET_KEY}' | base64 --decode
 ```
 
 Expected: the secret value is printed (it is stored base64-encoded).
@@ -70,10 +70,10 @@ Expected: the `Environment` section lists both variables (from the ConfigMap and
 ### 5. Application uses the Secret, not a hardcoded key
 
 ```bash
-grep -n "SECRET_KEY" todolist/settings.py
+grep -n "SECRET_KEY" src/todolist/settings.py
 ```
 
-Expected: the value is read from the environment (`os.environ["SECRET_KEY"]`), no literal key in the file.
+Expected: the value is read from the environment (`os.environ`), no literal key in the file.
 
 ### 6. Application works
 
